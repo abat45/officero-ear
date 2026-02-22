@@ -8,6 +8,11 @@ echo "Installing espeak-ng..."
 apt-get update -qq && apt-get install -y -qq espeak-ng > /dev/null 2>&1
 echo "espeak-ng installed"
 
+# Install vLLM
+echo "Installing vLLM..."
+pip install -q vllm
+echo "vLLM installed"
+
 # Install Python deps
 echo "Installing Python dependencies..."
 pip install -q -r requirements.txt
