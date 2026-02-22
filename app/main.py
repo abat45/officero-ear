@@ -2,11 +2,14 @@
 
 import json
 import logging
+import os
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request
 from fastapi.responses import Response
 
 from app.call_handler import CallSession
+
+PUBLIC_HOST = os.getenv("PUBLIC_HOST", "")
 
 logging.basicConfig(
     level=logging.INFO,
@@ -20,9 +23,10 @@ app = FastAPI(title="Officero EAR V0")
 @app.post("/twilio/incoming")
 async def twilio_incoming(request: Request):
     """Return TwiML that tells Twilio to open a media stream WebSocket."""
-    host = request.headers.get("host", "localhost:8080")
-    # Use wss:// — Twilio requires a secure WebSocket
+    # Use PUBLIC_HOST env var, or fall back to X-Forwarded-Host, then Host header
+    host = PUBLIC_HOST or request.headers.get("x-forwarded-host") or request.headers.get("host", "localhost:8080")
     ws_url = f"wss://{host}/twilio/stream"
+    logger.info("TwiML stream URL: %s", ws_url)
 
     twiml = (
         '<?xml version="1.0" encoding="UTF-8"?>'
