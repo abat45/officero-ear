@@ -3,7 +3,7 @@ uvicorn[standard]
 websockets
 twilio
 python-dotenv
-audioop-lts
+audioop-lts; python_version >= "3.13"
 numpy
 httpx
 kokoro>=0.9.2
