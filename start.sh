@@ -21,7 +21,8 @@ echo "Dependencies installed"
 # Start vLLM in background
 echo "Starting vLLM..."
 vllm serve Qwen/Qwen3-8B \
-    --gpu-memory-utilization 0.3 \
+    --gpu-memory-utilization 0.9 \
+    --max-model-len 4096 \
     --port 8000 \
     &
 VLLM_PID=$!
